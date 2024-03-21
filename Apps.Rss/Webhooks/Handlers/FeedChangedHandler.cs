@@ -6,7 +6,7 @@ namespace Apps.Rss.Webhooks.Handlers;
 
 public class FeedChangedHandler : RssEventHandler
 {
-    public FeedChangedHandler([WebhookParameter] FeedEventInput input) : base(input.FeedUrl)
+    public FeedChangedHandler([WebhookParameter(true)] FeedEventInput input) : base(input.FeedUrl)
     {
     }
 }

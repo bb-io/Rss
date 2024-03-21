@@ -32,6 +32,7 @@ public class FeedsActions : AppInvocable
 
         return new(response.Result.Info)
         {
+            Entries = response.Result.Entries,
             Content = await _fileManagementClient.UploadAsync(new MemoryStream(html), MediaTypeNames.Text.Html,
                 $"{response.Result.Info.Title}.html")
         };

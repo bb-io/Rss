@@ -8,5 +8,5 @@ public class FeedEntryResponse
     
     public string Link { get; set; }
     
-    public FeedContentResponse Content { get; set; }
+    public FeedContentResponse? Content { get; set; }
 }

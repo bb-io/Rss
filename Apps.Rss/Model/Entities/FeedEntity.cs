@@ -12,6 +12,8 @@ public class FeedEntity
     public string Homepage { get; set; }
     
     public FileReference Content { get; set; }
+    
+    public IEnumerable<FeedEntryResponse> Entries { get; set; }
 
     public FeedEntity()
     {

@@ -3,6 +3,7 @@ using Apps.Rss.Model.Response;
 using Apps.Rss.Webhooks.Models;
 using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Webhooks;
+using RestSharp;
 
 namespace Apps.Rss.Webhooks.Handlers.Base;
 
@@ -15,11 +16,13 @@ public abstract class RssEventHandler : IWebhookEventHandler
         Url = url;
     }
 
-    public Task SubscribeAsync(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProvider,
+    public async Task SubscribeAsync(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProvider,
         Dictionary<string, string> values)
     {
-        var endpoint = $"/subscribe?url={Url}";
-        return new AppClient(authenticationCredentialsProvider.ToArray()).ExecuteWithErrorHandling(new(endpoint));
+        var client = new AppClient(authenticationCredentialsProvider.ToArray());
+        
+        await client.ExecuteWithErrorHandling(new($"/setwebhook?url={values["payloadUrl"]}", Method.Post));
+        await client.ExecuteWithErrorHandling(new($"/subscribe?url={Url}"));
     }
 
     public async Task UnsubscribeAsync(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProvider,

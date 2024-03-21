@@ -31,7 +31,9 @@ public static class FeedHtmlConverter
         linkNode.InnerHtml = feedEntry.Link;
 
         var contentNode = doc.CreateElement(HtmlConstants.Div);
-        contentNode.InnerHtml = feedEntry.Content.Html;
+        
+        if(feedEntry.Content?.Html is not null)
+            contentNode.InnerHtml = feedEntry.Content.Html;
 
         entryNode.AppendChild(titleNode);
         entryNode.AppendChild(descriptionNode);

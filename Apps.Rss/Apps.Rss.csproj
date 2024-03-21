@@ -4,14 +4,15 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Product>App</Product>
-        <Description>Description</Description>
+        <Product>RSS</Product>
+        <Description>Standardized system for the distribution of content from an online publisher</Description>
         <Version>1.0.0</Version>
-        <AssemblyName>Apps.App</AssemblyName>
+        <AssemblyName>Apps.Rss</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.19"/>
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
     </ItemGroup>
 
     <ItemGroup>

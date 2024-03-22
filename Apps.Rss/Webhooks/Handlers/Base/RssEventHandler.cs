@@ -23,7 +23,15 @@ public abstract class RssEventHandler : IWebhookEventHandler
         
         await client.ExecuteWithErrorHandling(new($"/setwebhook?url={values["payloadUrl"]}", Method.Post));
 
-        foreach(var url in Urls)
+        var subscriptions = await ListSubscriptions(client);
+
+        foreach (var subscription in subscriptions.Result.Subscriptions)
+        {
+            var endpoint = $"removesubscription?id={subscription.SubscriptionId}";
+            await client.ExecuteWithErrorHandling(new(endpoint));
+        }
+
+        foreach (var url in Urls)
         {
             await client.ExecuteWithErrorHandling(new($"/subscribe?url={url}"));
         }        
@@ -35,7 +43,7 @@ public abstract class RssEventHandler : IWebhookEventHandler
         var client = new AppClient(authenticationCredentialsProvider.ToArray());
         var subscriptions = await ListSubscriptions(client);
 
-        foreach(var subscription in subscriptions.Result.Subscriptions)
+        foreach (var subscription in subscriptions.Result.Subscriptions)
         {
             var endpoint = $"removesubscription?id={subscription.SubscriptionId}";
             await client.ExecuteWithErrorHandling(new(endpoint));

@@ -28,13 +28,13 @@ public class FeedsActions : AppInvocable
         var endpoint = $"/get?url={input.FeedUrl}";
         var response = await Client.ExecuteWithErrorHandling<RssResponse<FeedResponse>>(new(endpoint));
 
-        var html = FeedHtmlConverter.ToHtml(response.Result.Entries);
+        // var html = FeedHtmlConverter.ToHtml(response.Result.Entries);
 
         return new(response.Result.Info)
         {
             Entries = response.Result.Entries,
-            Content = await _fileManagementClient.UploadAsync(new MemoryStream(html), MediaTypeNames.Text.Html,
-                $"{response.Result.Info.Title}.html")
+            //Content = await _fileManagementClient.UploadAsync(new MemoryStream(html), MediaTypeNames.Text.Html,
+            //    $"{response.Result.Info.Title}.html")
         };
     }
 }

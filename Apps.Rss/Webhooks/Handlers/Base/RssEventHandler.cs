@@ -9,11 +9,11 @@ namespace Apps.Rss.Webhooks.Handlers.Base;
 
 public abstract class RssEventHandler : IWebhookEventHandler
 {
-    private string Url { get; }
+    private IEnumerable<string> Urls { get; }
 
-    protected RssEventHandler(string url)
+    protected RssEventHandler(IEnumerable<string> urls)
     {
-        Url = url;
+        Urls = urls;
     }
 
     public async Task SubscribeAsync(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProvider,
@@ -22,7 +22,11 @@ public abstract class RssEventHandler : IWebhookEventHandler
         var client = new AppClient(authenticationCredentialsProvider.ToArray());
         
         await client.ExecuteWithErrorHandling(new($"/setwebhook?url={values["payloadUrl"]}", Method.Post));
-        await client.ExecuteWithErrorHandling(new($"/subscribe?url={Url}"));
+
+        foreach(var url in Urls)
+        {
+            await client.ExecuteWithErrorHandling(new($"/subscribe?url={url}"));
+        }        
     }
 
     public async Task UnsubscribeAsync(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProvider,
@@ -30,13 +34,12 @@ public abstract class RssEventHandler : IWebhookEventHandler
     {
         var client = new AppClient(authenticationCredentialsProvider.ToArray());
         var subscriptions = await ListSubscriptions(client);
-        var subscriptionToDelete = subscriptions.Result.Subscriptions.FirstOrDefault(x => x.FeedUrl == Url);
 
-        if (subscriptionToDelete is null)
-            return;
-
-        var endpoint = $"removesubscription?id={subscriptionToDelete.SubscriptionId}";
-        await client.ExecuteWithErrorHandling(new(endpoint));
+        foreach(var subscription in subscriptions.Result.Subscriptions)
+        {
+            var endpoint = $"removesubscription?id={subscription.SubscriptionId}";
+            await client.ExecuteWithErrorHandling(new(endpoint));
+        }        
     }
 
     private Task<RssResponse<ListSubscriptionsResponse>> ListSubscriptions(AppClient client)

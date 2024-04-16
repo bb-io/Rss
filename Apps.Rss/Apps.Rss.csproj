@@ -6,11 +6,12 @@
         <Nullable>enable</Nullable>
         <Product>RSS API</Product>
         <Description>Subscribe to RSS feeds and receive nearly real-time updates.</Description>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
         <AssemblyName>Apps.Rss</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Blackbird.Applications.Sdk.Common" Version="2.6.0"/>
         <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.19"/>
         <PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
     </ItemGroup>

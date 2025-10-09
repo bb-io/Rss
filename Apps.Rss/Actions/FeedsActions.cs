@@ -11,7 +11,7 @@ using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 
 namespace Apps.Rss.Actions;
 
-[ActionList]
+[ActionList("Feed")]
 public class FeedsActions : AppInvocable
 {
     private readonly IFileManagementClient _fileManagementClient;
